@@ -1,8 +1,19 @@
 import React from "react"
-import { graphql } from "gatsby"
+import { graphql, Link } from "gatsby"
 
 import Layout from "../components/layout"
 import SEO from "../components/seo"
+import styled from "styled-components"
+
+const BlogLink = styled(Link)`
+  text-decoration: none;
+  margin-top: 2em;
+`
+
+const BlogTitle = styled.h3`
+  margin-bottom: 10px;
+  color: rebeccapurple;
+`
 
 const IndexPage = ({data}) => (
   <Layout>
@@ -12,8 +23,10 @@ const IndexPage = ({data}) => (
       <h4>Total posts: {data.allMarkdownRemark.totalCount}</h4>
       {
         data.allMarkdownRemark.edges.map(({node}) => (
-          <div key={node.id} style={{ marginTop: '2em' }}>
-            <h3 style={{ marginBottom: '10px' }}>{node.frontmatter.title} - {node.frontmatter.date}</h3>
+          <div key={node.id}>
+            <BlogLink to={node.fields.slug}>
+              <BlogTitle>{node.frontmatter.title} - {node.frontmatter.date}</BlogTitle>
+            </BlogLink>
             <p>{node.excerpt}</p>
           </div>
         ))
@@ -26,7 +39,7 @@ export default IndexPage
 
 export const query = graphql`
   {
-    allMarkdownRemark {
+    allMarkdownRemark(sort: {fields: frontmatter___date, order: DESC}) {
       edges {
         node {
           id
@@ -37,6 +50,9 @@ export const query = graphql`
           }
           html
           excerpt
+          fields {
+            slug
+          }
         }
       }
       totalCount
