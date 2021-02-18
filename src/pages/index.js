@@ -20,7 +20,7 @@ const IndexPage = ({data}) => (
     <SEO title="Home" />
     <div>
       <h1>Th3Wall's thougths</h1>
-      <h4>Total posts: {data.allMarkdownRemark.totalCount}</h4>
+      <h4><i>Total posts: {data.allMarkdownRemark.totalCount}</i></h4>
       {
         data.allMarkdownRemark.edges.map(({node}) => (
           <div key={node.id}>
